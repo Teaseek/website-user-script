@@ -1,0 +1,15 @@
+// ==UserScript==
+// @name         ${name}
+// @namespace    ${namespace}
+// @version      ${version}
+// @description  ${description}
+// @match        ${match}
+// @icon         ${icon}
+// @grant        ${grant}
+// @connect      ${connect}
+// @run-at       ${runAt}
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
