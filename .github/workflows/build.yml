@@ -1,0 +1,42 @@
+name: Test and Build App
+
+on:
+  push:
+    branches: [ "main", "stage", "dev" ]
+  pull_request:
+    branches: [ "main", "stage", "dev" ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+          - prod
+          - stage
+          - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 8
+        run_install: true
+
+    - name: Run linters and tests and build
+      run: |
+        pnpm lint
+        pnpm test
+        pnpm run build
+
