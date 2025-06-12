@@ -60,3 +60,6 @@ local.env
 
 # Test output
 /test-output
+
+# Ignore test HTML fixtures for real KinoPub pages
+/tests/fixtures/

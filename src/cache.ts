@@ -1,8 +1,8 @@
 declare const __CACHE_PREFIX__: string;
 declare const __CACHE_TTL_MS__: number;
 
-function getCacheKey(type: string, title: string): string {
-    return `${__CACHE_PREFIX__}${type}_${encodeURIComponent(title)}`;
+export function getCacheKey(type: string, title: string): string {
+    return `${__CACHE_PREFIX__}_${type}_${encodeURIComponent(title)}`;
 }
 
 export function saveToCache(type: string, title: string, data: unknown): void {

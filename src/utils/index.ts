@@ -1,12 +1,3 @@
-export declare const GM_xmlhttpRequest: (options: {
-    method: string;
-    url: string;
-    responseType?: string;
-    onload: (res: { status: number; response: unknown }) => void;
-    onerror?: () => void;
-    ontimeout?: () => void;
-}) => void;
-
 export function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

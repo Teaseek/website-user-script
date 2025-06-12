@@ -8,11 +8,16 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
         "outDir": "dist",
-        "rootDir": "src",
-        "resolveJsonModule": true
+        "rootDir": ".",
+        "resolveJsonModule": true,
+        "typeRoots": [
+            "@types",
+        ]
     },
     "include": [
-        "src/**/*.ts"
+        "@types/**/*.d.ts",
+        "src/**/*.ts",
+        "tests/**/*.ts"
     ],
     "exclude": [
         "node_modules",

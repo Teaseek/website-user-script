@@ -28,7 +28,7 @@ async function fetchShikiRatingByTitles(titles: string[]): Promise<{ url: string
     throw lastError;
 }
 
-async function insertShikiRating(): Promise<void> {
+export async function insertShikiRating(): Promise<void> {
     const cell = getDetailsCell();
     if (!cell || cell.querySelector(`.${RATING_CLASS_NAME}`)) return;
     if (!isAnimePage(GENRE_LABEL, GENRES)) return;
@@ -46,15 +46,8 @@ async function insertShikiRating(): Promise<void> {
     try {
         const data = await fetchShikiRatingByTitles(titles);
         cell.replaceChild(createBadge(data, RATING_CLASS_NAME), loaderBadge);
-    } catch {
-        logger.error(`anime ${titles.join(', ')} not founded on shikimory`);
+    } catch (error) {
+        logger.error(`anime ${titles.join(', ')} not founded on shikimory`, error);
         loaderBadge.remove();
     }
 }
-
-function observeDetailsPage(cb: () => void): void {
-    cb();
-    new MutationObserver(cb).observe(document.body, { childList: true, subtree: true });
-}
-
-observeDetailsPage(insertShikiRating);

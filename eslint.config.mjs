@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import vitest from "eslint-plugin-vitest";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
@@ -24,5 +25,13 @@ export default defineConfig([
             "@typescript-eslint/no-explicit-any": "warn"
         }
     },
-    { ignores: ["scripts/**", "dist/**", "vite.config.ts"] },
+    {
+        files: ["tests/**/*.ts"],
+        plugins: { vitest },
+        languageOptions: { globals: globals.node },
+        rules: {
+            ...vitest.configs.recommended.rules
+        }
+    },
+    { ignores: ["scripts/**", "dist/**", "vite.config.ts", "vitest.config.ts"] },
 ]);
