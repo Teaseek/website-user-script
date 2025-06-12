@@ -5,7 +5,6 @@ A userscript that inserts Shikimori rating and vote count into Website anime det
 ## Features
 - Automatically displays Shikimori rating and votes on Website anime pages.
 - Caches results for 1 day.
-- Modern build system (Vite + TypeScript + ESLint + auto-generated userscript header).
 
 ## Installation & Build
 
