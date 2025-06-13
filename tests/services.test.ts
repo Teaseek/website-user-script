@@ -1,28 +1,28 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { vi } from 'vitest';
 import { CacheService } from '../src/services/cacheService';
+import { initEnv } from './utils/env';
+import { vi } from 'vitest';
 import { ICacheService } from '../src/services/types';
 
-describe('cache', () => {
-    const cacheService: ICacheService = new CacheService();
-    
+describe('services/cacheService', () => {
+    let cacheService: ICacheService;
+
     beforeEach(() => {
+        initEnv();
+
         globalThis.localStorage = window.localStorage;
         localStorage.clear();
-        vi.useRealTimers();
-
-        globalThis.__CACHE_PREFIX__ = 'test_cache_1_0_0';
-        globalThis.__CACHE_TTL_MS__ = "1000";
+        cacheService = new CacheService();
     });
 
     it('getCacheKey should generate correct key', () => {
-        expect(cacheService.getCacheKey('shiki', 'Title')).toBe('test_cache_1_0_0_shiki_Title');
+        expect(cacheService.getCacheKey('shiki', 'Title')).toBe('test-cache_1.0.0_shiki_Title');
     });
     it('saveToCache should save data to localStorage', () => {
         const data = { url: 'https://example.com', rating: '8.5', votes: '1000' };
         cacheService.saveToCache('shiki', 'Title', data);
 
-        const record = localStorage.getItem('test_cache_1_0_0_shiki_Title');
+        const record = localStorage.getItem('test-cache_1.0.0_shiki_Title');
         expect(record).not.toBeNull();
 
         const parsed = JSON.parse(record!);

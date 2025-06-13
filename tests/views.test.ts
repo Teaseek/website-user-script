@@ -1,11 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { createRatingBadge } from '../src/views/kp-badge';
 
-describe('createBadge', () => {
-    beforeEach(() => {
-        document.body.innerHTML = '';
-    });
-
+describe('views/kp-badge', () => {
     it('should create a badge element with correct content', () => {
         const badge = createRatingBadge({ url: 'https://test', rating: '7.5', votes: '1234' }, 'test-class');
         document.body.appendChild(badge);
