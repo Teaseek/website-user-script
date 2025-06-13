@@ -1,6 +1,6 @@
 import { SimpleContainer } from '../utils/di';
 import { Logger } from './logger';
-import { CacheService } from './cacheService';
+import { CacheService } from './cache-service';
 
 export const TYPES = {
     Logger: Symbol('Logger'),

@@ -1,4 +1,4 @@
-import { fetchRetry } from "../utils/fetchAdapter";
+import { fetchRetry } from "../utils/fetch-adapter";
 import { RetryOptions } from "../utils/retry";
 
 export async function getRatingCount(url: string, retryOptions?: RetryOptions): Promise<string> {

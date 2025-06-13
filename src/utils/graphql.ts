@@ -1,4 +1,4 @@
-import { fetchAdapter } from "./fetchAdapter";
+import { fetchAdapter } from "./fetch-adapter";
 
 interface GraphQLResponse<T> {
     data: T;

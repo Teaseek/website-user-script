@@ -2,7 +2,7 @@ import { retry } from "../../utils/retry";
 import { graphqlRequest } from "../../utils/graphql";
 import { RetryOptions } from "../../utils/retry";
 import { AnimeBySearchQuery, AnimeBySearchQueryVariables } from "./graphql.gen";
-import AnimeBySearchDocument from "./query/animeBySearch.graphql";
+import AnimeBySearchDocument from "./query/anime-by-search.graphql";
 
 declare const __SHIKIMORI_API_HOST__: string;
 

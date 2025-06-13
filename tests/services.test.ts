@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { CacheService } from '../src/services/cacheService';
+import { CacheService } from '../src/services/cache-service';
 import { initEnv } from './utils/env';
 import { vi } from 'vitest';
 import { ICacheService } from '../src/services/types';
