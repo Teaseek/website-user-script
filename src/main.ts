@@ -1,10 +1,13 @@
-import { saveToCache, loadFromCache, isCacheExpired } from './cache';
 import { createRatingBadge } from './views/kp-badge';
-import { logger } from './utils/logger';
 import { getDetailsCell, getTitles, isAnimePage } from './parse/kp-website';
 import { searchAnime } from './api/shikimori/api';
 import { getRatingCount } from './parse/shikimory-website';
 import { RetryOptions } from './utils/retry';
+import { ICacheService, ILogger } from './services/types';
+import { container, TYPES } from './services';
+
+const cacheService = container.get<ICacheService>(TYPES.Cache);
+const logger = container.get<ILogger>(TYPES.Logger);
 
 declare const __SHIKIMORI_API_DELAY_MS__: string;
 declare const __SHIKIMORI_API_RETRY_COUNT__: string;
@@ -15,6 +18,7 @@ const RETRY_COUNT = parseInt(__SHIKIMORI_API_RETRY_COUNT__, 10) || 3;
 const GENRE_LABEL = 'Жанр';
 const GENRES = ['Аниме', 'Мультфильм'];
 const RATING_CLASS_NAME = 'shikimori';
+const CACHE_NAME = 'shikimori';
 const SEARCH_LIMIT = 1;
 const retryOptions: RetryOptions = {
     delay: DELAY_MS,
@@ -24,15 +28,15 @@ const retryOptions: RetryOptions = {
 async function fetchShikiRatingByTitles(titles: string[]): Promise<{ url: string; rating: string; votes: string }> {
     let lastError;
     for (const title of titles) {
-        const cache = loadFromCache('shiki', title);
-        if (cache && !isCacheExpired(cache)) {
+        const cache = cacheService.loadFromCache<{ url: string; rating: string; votes: string }>(CACHE_NAME, title);
+        if (cache && !cacheService.isCacheExpired(cache)) {
             return cache.data;
         }
     }
     for (const title of titles) {
         try {
             const data = await fetchRatingByTitle(title);
-            saveToCache('shiki', title, data);
+            cacheService.saveToCache(CACHE_NAME, title, data);
             return data;
         } catch (err) {
             lastError = err;

@@ -7,7 +7,6 @@ interface GraphQLResponse<T> {
         locations?: Array<{ line: number; column: number }>;
         path?: string[];
     }>;
-    extensions?: Record<string, unknown>;
 }
 
 export async function graphqlRequest<T>(
