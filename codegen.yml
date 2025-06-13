@@ -1,0 +1,7 @@
+schema: ./schemas/shikimori/schema.graphql
+documents: ./src/api/shikimori/query/**/*.graphql
+generates:
+  src/api/shikimori/graphql.gen.ts:
+    plugins:
+      - typescript
+      - typescript-operations

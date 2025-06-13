@@ -33,5 +33,5 @@ export default defineConfig([
             ...vitest.configs.recommended.rules
         }
     },
-    { ignores: ["scripts/**", "dist/**", "vite.config.ts", "vitest.config.ts"] },
+    { ignores: ["scripts/**", "dist/**", "vite.config.ts", "vitest.config.ts", "**/*.gen.ts"] },
 ]);

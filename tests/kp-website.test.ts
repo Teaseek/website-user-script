@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getTitles, getDetailsCell } from '../src/parse/kp-website';
-import { createBadge } from '../src/views/badge';
+import { createRatingBadge } from '../src/views/kp-badge';
 
 describe('kp-website parse', () => {
     it('getTitles should parse titles from document.title', () => {
@@ -17,7 +17,7 @@ describe('kp-website parse', () => {
 describe('kp-website createBadge', () => {
     it('should create a badge with correct content', () => {
         const data = { url: 'https://test', rating: '6.99', votes: '15488' };
-        const badge = createBadge(data, 'shikimori');
+        const badge = createRatingBadge(data, 'shikimori');
 
         expect(badge.outerHTML).toContain('class="m-r-md shikimori"');
         expect(badge.innerHTML).toContain('img-responsive kinopoisk');

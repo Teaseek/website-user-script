@@ -8,7 +8,7 @@ const hasFixture = fs.existsSync(path.resolve(__dirname, 'fixtures/kp-detail.htm
 
 describe.skipIf(!hasFixture)('kp-website parse', () => {
     beforeAll(() => {
-        globalThis.__SHIKIMORI_HOST__ = 'shikimori.one';
+        globalThis.__SHIKIMORI_API_HOST__ = 'shikimori.one/api/graphql';
         globalThis.__SHIKIMORI_API_DELAY_MS__ = "300";
         globalThis.__SHIKIMORI_API_RETRY_COUNT__ = "3";
         globalThis.__PKG_NAME__ = 'test-package';

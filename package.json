@@ -1,40 +1,45 @@
 {
-    "name": "website-user-script",
-    "version": "1.3.35",
-    "description": "Inserts Shikimori rating and vote count into website anime detail pages only, tries both original and Russian title, caches for 1 day.",
-    "homepage": "https://github.com/Teaseek/website-user-script#readme",
-    "bugs": {
-        "url": "https://github.com/Teaseek/website-user-script/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Teaseek/website-user-script.git"
-    },
-    "license": "MIT",
-    "author": "@Teaseek",
-    "type": "module",
-    "scripts": {
-        "build": "pnpm run bump-version && vite build && node scripts/postbuild-inject-userscript.mjs",
-        "bump-version": "node scripts/bump-version.mjs",
-        "lint": "eslint . --ext .js,.mjs,.ts",
-        "test": "vitest run"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.28.0",
-        "@types/node": "^24.0.1",
-        "@typescript-eslint/eslint-plugin": "^8.34.0",
-        "@typescript-eslint/parser": "^8.34.0",
-        "dotenv": "^16.5.0",
-        "eslint": "^9.28.0",
-        "eslint-plugin-vitest": "^0.5.4",
-        "globals": "^16.2.0",
-        "jsdom": "^26.1.0",
-        "lefthook": "^1.11.13",
-        "prettier": "^3.5.3",
-        "typescript": "^5.8.3",
-        "vite": "^6.3.5",
-        "vite-plugin-userscript": "^0.1.3",
-        "vitest": "^3.2.3"
-    },
-    "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
+  "name": "website-user-script",
+  "version": "1.3.62",
+  "description": "Inserts Shikimori rating and vote count into website anime detail pages only, tries both original and Russian title, caches for 1 day.",
+  "homepage": "https://github.com/Teaseek/website-user-script#readme",
+  "bugs": {
+    "url": "https://github.com/Teaseek/website-user-script/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teaseek/website-user-script.git"
+  },
+  "license": "MIT",
+  "author": "@Teaseek",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run bump-version && vite build && node scripts/postbuild-inject-userscript.mjs",
+    "bump-version": "node scripts/bump-version.mjs",
+    "generate": "graphql-codegen",
+    "lint": "eslint . --ext .js,.mjs,.ts",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@types/node": "^24.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-vitest": "^0.5.4",
+    "globals": "^16.2.0",
+    "graphql": "^16.11.0",
+    "jsdom": "^26.1.0",
+    "lefthook": "^1.11.13",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-string": "^1.2.3",
+    "vitest": "^3.2.3"
+  },
+  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
 }

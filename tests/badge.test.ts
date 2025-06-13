@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { createBadge } from '../src/views/badge';
+import { createRatingBadge } from '../src/views/kp-badge';
 
 describe('createBadge', () => {
     beforeEach(() => {
@@ -7,7 +7,7 @@ describe('createBadge', () => {
     });
 
     it('should create a badge element with correct content', () => {
-        const badge = createBadge({ url: 'https://test', rating: '7.5', votes: '1234' }, 'test-class');
+        const badge = createRatingBadge({ url: 'https://test', rating: '7.5', votes: '1234' }, 'test-class');
         document.body.appendChild(badge);
         expect(badge.outerHTML).toContain('test-class');
         expect(badge.innerHTML).toContain('7,5');

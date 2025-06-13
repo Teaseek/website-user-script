@@ -1,6 +1,6 @@
 import { formatRating, formatVotes } from "../utils/format";
 
-export function createBadge({ url, rating = '0', votes = '0' }: { url: string, rating?: string, votes?: string; }, className: string): HTMLElement {
+export function createRatingBadge({ url, rating = '0', votes = '0' }: { url: string, rating?: string, votes?: string; }, className: string): HTMLElement {
     const span = document.createElement('span');
     span.className = `m-r-md ${className}`;
     span.innerHTML = `

@@ -1,27 +1,25 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { GM_xmlhttpRequest } from './utils/gm-xml-http-request';
+import { xmlHttpRequest } from './utils/gm-xml-http-request';
 
-describe('fetchRatingByTitle', () => {
+describe('searchAnime', () => {
     beforeEach(() => {
-        globalThis.__SHIKIMORI_HOST__ = 'shikimori.one';
+        globalThis.__SHIKIMORI_API_HOST__ = 'shikimori.one/api/graphql';
         globalThis.__SHIKIMORI_API_DELAY_MS__ = "300";
         globalThis.__SHIKIMORI_API_RETRY_COUNT__ = "3";
         globalThis.__PKG_NAME__ = 'test-package';
         globalThis.__CACHE_PREFIX__ = 'test-cache_1.0.0';
         globalThis.__CACHE_TTL_MS__ = "1000";
-        globalThis.GM_xmlhttpRequest = GM_xmlhttpRequest;
+        if (!globalThis.GM) globalThis.GM = {} as typeof GM;
+        globalThis.GM.xmlHttpRequest = xmlHttpRequest;
     });
 
-    it('should fetch rating successfully', async () => {
-        const fetchRatingByTitle = (await import('../src/api/shiki-api')).fetchRatingByTitle;
+    it('should search anime by title', async () => {
+        const searchAnime = (await import('../src/api/shikimori/api')).searchAnime;
 
-        const result = await fetchRatingByTitle('Naruto');
+        const results = await searchAnime({ search: 'Naruto', limit: 1 });
 
-        expect(result).toBeDefined();
-        expect(result).toHaveProperty('rating')
-        expect(result).toHaveProperty('votes')
-        expect(result).toHaveProperty('url', 'https://shikimori.one/animes/z20-naruto');
+        expect(results).toBeDefined();
+        expect(results.length).toBeGreaterThan(0);
+        expect(results[0]).toHaveProperty('name', 'Naruto');
     });
 });
-
-

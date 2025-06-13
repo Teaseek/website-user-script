@@ -1,12 +1,25 @@
-import { fetchRatingByTitle } from './api/shiki-api';
 import { saveToCache, loadFromCache, isCacheExpired } from './cache';
-import { createBadge } from './views/badge';
+import { createRatingBadge } from './views/kp-badge';
 import { logger } from './utils/logger';
 import { getDetailsCell, getTitles, isAnimePage } from './parse/kp-website';
+import { searchAnime } from './api/shikimori/api';
+import { getRatingCount } from './parse/shikimory-website';
+import { RetryOptions } from './utils/retry';
+
+declare const __SHIKIMORI_API_DELAY_MS__: string;
+declare const __SHIKIMORI_API_RETRY_COUNT__: string;
+
+const DELAY_MS = parseFloat(__SHIKIMORI_API_DELAY_MS__) || 1000;
+const RETRY_COUNT = parseInt(__SHIKIMORI_API_RETRY_COUNT__, 10) || 3;
 
 const GENRE_LABEL = 'Жанр';
 const GENRES = ['Аниме', 'Мультфильм'];
 const RATING_CLASS_NAME = 'shikimori';
+const SEARCH_LIMIT = 1;
+const retryOptions: RetryOptions = {
+    delay: DELAY_MS,
+    retries: RETRY_COUNT,
+}
 
 async function fetchShikiRatingByTitles(titles: string[]): Promise<{ url: string; rating: string; votes: string }> {
     let lastError;
@@ -28,12 +41,34 @@ async function fetchShikiRatingByTitles(titles: string[]): Promise<{ url: string
     throw lastError;
 }
 
+async function fetchRatingByTitle(title: string): Promise<{ url: string; rating: string; votes: string }> {
+    const anime = await searchAnime({ search: title, limit: SEARCH_LIMIT }, retryOptions);
+    if (anime.length === 0) {
+        throw new Error(`Anime with title "${title}" not found`);
+    }
+
+    const { score, name, url } = anime[0];
+    if (!score) {
+        throw new Error(`Anime with title "${title}" does not have a valid score or name`);
+    }
+
+    const votes = await getRatingCount(url, retryOptions);
+    
+    logger.debug(`Shikimori rating for "${name}": ${score}`);
+
+    return {
+        url,
+        rating: score.toString(),
+        votes,
+    };
+}
+
 export async function insertShikiRating(): Promise<void> {
     const cell = getDetailsCell();
     if (!cell || cell.querySelector(`.${RATING_CLASS_NAME}`)) return;
     if (!isAnimePage(GENRE_LABEL, GENRES)) return;
 
-    const loaderBadge = createBadge({ url: '#' }, RATING_CLASS_NAME);
+    const loaderBadge = createRatingBadge({ url: '#' }, RATING_CLASS_NAME);
     cell.insertBefore(loaderBadge, cell.firstChild);
 
     const titles = getTitles();
@@ -45,9 +80,9 @@ export async function insertShikiRating(): Promise<void> {
 
     try {
         const data = await fetchShikiRatingByTitles(titles);
-        cell.replaceChild(createBadge(data, RATING_CLASS_NAME), loaderBadge);
+        cell.replaceChild(createRatingBadge(data, RATING_CLASS_NAME), loaderBadge);
     } catch (error) {
-        logger.error(`anime ${titles.join(', ')} not founded on shikimory`, error);
+        logger.error(`anime ${titles.join(', ')} not founded on shikimori`, error);
         loaderBadge.remove();
     }
 }
