@@ -1,5 +1,5 @@
 import { createRatingBadge } from './views/kp-badge';
-import { getDetailsCell, getTitles, isAnimePage } from './parse/kp-website';
+import { getViewCell, getTitles, isAnimePage } from './parse/kp-website';
 import { searchAnime } from './api/shikimori/api';
 import { getRatingCount } from './parse/shikimory-website';
 import { RetryOptions } from './utils/retry';
@@ -25,7 +25,7 @@ const retryOptions: RetryOptions = {
     retries: RETRY_COUNT,
 }
 
-async function fetchShikiRatingByTitles(titles: string[]): Promise<{ url: string; rating: string; votes: string }> {
+async function fetchShikimoriRatingByTitles(titles: string[]): Promise<{ url: string; rating: string; votes: string }> {
     let lastError;
     for (const title of titles) {
         const cache = cacheService.loadFromCache<{ url: string; rating: string; votes: string }>(CACHE_NAME, title);
@@ -67,8 +67,8 @@ async function fetchRatingByTitle(title: string): Promise<{ url: string; rating:
     };
 }
 
-export async function insertShikiRating(): Promise<void> {
-    const cell = getDetailsCell();
+export async function insertShikimoriRating(): Promise<void> {
+    const cell = getViewCell();
     if (!cell || cell.querySelector(`.${RATING_CLASS_NAME}`)) return;
     if (!isAnimePage(GENRE_LABEL, GENRES)) return;
 
@@ -83,7 +83,7 @@ export async function insertShikiRating(): Promise<void> {
     }
 
     try {
-        const data = await fetchShikiRatingByTitles(titles);
+        const data = await fetchShikimoriRatingByTitles(titles);
         cell.replaceChild(createRatingBadge(data, RATING_CLASS_NAME), loaderBadge);
     } catch (error) {
         logger.error(`anime ${titles.join(', ')} not founded on shikimori`, error);

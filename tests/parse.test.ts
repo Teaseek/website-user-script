@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { getTitles, getDetailsCell, isAnimePage } from '../src/parse/kp-website';
+import { getTitles, getViewCell, isAnimePage } from '../src/parse/kp-website';
 import { getRatingCount } from '../src/parse/shikimory-website';
 import { initEnv } from './utils/env';
 import fs from 'fs';
@@ -20,7 +20,7 @@ describe.skipIf(!hasFixture)('parse/kp-website', () => {
     });
 
     it('should return null if details cell not found', () => {
-        expect(getDetailsCell()).toBeDefined();
+        expect(getViewCell()).toBeDefined();
     });
 
     it('should detect anime page', async () => {

@@ -14,8 +14,8 @@ describe.skipIf(!hasFixture)('kp-website parse', () => {
     });
 
     it('should create a badge with correct content', async () => {
-        const insertShikiRating = (await import('../src/main')).insertShikiRating;
-        await insertShikiRating?.();
+        const insertShikimoriRating = (await import('../src/main')).insertShikimoriRating;
+        await insertShikimoriRating?.();
 
         const badge = document.querySelector('.shikimori');
         expect(badge).not.toBeNull();

@@ -17,6 +17,6 @@ export function getTitles(): string[] {
     return [origTitle, ruTitle];
 }
 
-export function getDetailsCell(): Element | null {
+export function getViewCell(): Element | null {
     return document.querySelector('td.item-view');
 }
