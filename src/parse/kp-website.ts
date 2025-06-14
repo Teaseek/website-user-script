@@ -54,3 +54,17 @@ export function getItemPosterRatingContainers(): HTMLElement[] | null {
         .map(el => el.parentElement)
         .filter(el => el !== null);
 }
+
+
+export function getItemListRatingBadgeContainer(element: Element): Element | null {
+    return element.querySelector('.item-info .list-inline');
+}
+
+export function getItemListRatingContainers(): HTMLElement[] | null {
+    const selector = '.item > .item-info';
+
+    return Array.from(document.querySelectorAll(selector))
+        .filter(el => el.textContent?.trim() !== '')
+        .map(el => el.parentElement?.parentElement)
+        .filter(el => el !== null && el !== undefined);
+}

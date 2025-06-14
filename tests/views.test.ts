@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createRatingViewBadge, createRatingPosterBadge } from '../src/views/kp-website';
+import { createRatingViewBadge, createRatingPosterBadge, createRatingListBadge } from '../src/views/kp-website';
 import { beforeEach } from 'vitest';
 
 describe('views/kp-badge', () => {
@@ -22,5 +22,16 @@ describe('views/kp-badge', () => {
         expect(badge.innerHTML).toContain('https://test');
         expect(badge.outerHTML).toContain('poster-class');
         expect(badge.innerHTML).toContain('8');
+    });
+
+    it('should create a view rating list badge with correct content', () => {
+        const badge = createRatingListBadge({ url: 'https://test', rating: '9.0' }, 'list-class');
+        expect(badge).not.toBeNull();
+        if (badge) {
+            document.body.appendChild(badge);
+            expect(badge.outerHTML).toContain('list-class');
+            expect(badge.innerHTML).toContain('https://test');
+            expect(badge.innerHTML).toContain('9');
+        }
     });
 });

@@ -1,5 +1,5 @@
-import { createRatingViewBadge, createRatingPosterBadge } from './views/kp-website';
-import { getViewRatingBadgeContainer, getTitles, isAnimePage, getItemPosterRatingContainers, getItemPosterRatingBadgeContainer } from './parse/kp-website';
+import { createRatingViewBadge, createRatingPosterBadge, createRatingListBadge } from './views/kp-website';
+import { getViewRatingBadgeContainer, getTitles, isAnimePage, getItemPosterRatingContainers, getItemPosterRatingBadgeContainer, getItemListRatingContainers, getItemListRatingBadgeContainer } from './parse/kp-website';
 import { searchAnime } from './api/shikimori/api';
 import { getRatingCount } from './parse/shikimory-website';
 import { RetryOptions } from './utils/retry';
@@ -84,18 +84,17 @@ export async function insertShikimoriViewRating(): Promise<void> {
     const loaderBadge = createRatingViewBadge({ url: '#' }, RATING_CLASS_NAME);
     cell.insertBefore(loaderBadge, cell.firstChild);
 
-    const titles = getTitles();
-    if (!titles.length) {
-        logger.error('titles not founded');
-        loaderBadge.remove();
-        return;
-    }
-
     try {
+        const titles = getTitles();
+        if (!titles.length) {
+            logger.error('titles not founded');
+            loaderBadge.remove();
+            return;
+        }
+
         const data = await fetchShikimoriRatingByTitles(titles);
         cell.replaceChild(createRatingViewBadge(data, RATING_CLASS_NAME), loaderBadge);
-    } catch (error) {
-        logger.error(`anime ${titles.join(', ')} not founded on shikimori`, error);
+    } catch {
         loaderBadge.remove();
     }
 }
@@ -116,7 +115,7 @@ export async function insertShikimoriPosterRating(): Promise<void> {
         try {
             const cachedData = getShikimoriCachedRatingByTitles(titles, false);
             if (!cachedData) {
-                return;
+                continue;
             }
 
             logger.debug(`Cached data for titles ${titles.join(', ')}:`, cachedData);
@@ -128,6 +127,41 @@ export async function insertShikimoriPosterRating(): Promise<void> {
             }
 
             badgeContainer.appendChild(createRatingPosterBadge(cachedData, RATING_CLASS_NAME));
+        }  catch (error) {
+            logger.error(`Error fetching cached data for titles ${titles.join(', ')}`, error);
+            continue;
+        }
+    }
+}
+
+export async function insertShikimoriListRating(): Promise<void> {
+    const containers = getItemListRatingContainers();
+    if (!containers || containers.length === 0) return;
+
+    for (const container of containers) {
+        if (container.querySelector(`.${RATING_CLASS_NAME}`)) continue;
+
+        const titles = getTitles('item-info', container);
+        if (!titles.length) {
+            logger.error('titles not founded');
+            continue;
+        }
+
+        try {
+            const cachedData = getShikimoriCachedRatingByTitles(titles, false);
+            if (!cachedData) {
+                continue;
+            }
+
+            logger.debug(`Cached data for titles ${titles.join(', ')}:`, cachedData);
+
+            const badgeContainer = getItemListRatingBadgeContainer(container);
+            if (!badgeContainer) {
+                logger.error('Poster rating badge container not found');
+                continue;
+            }
+
+            badgeContainer.appendChild(createRatingListBadge(cachedData, RATING_CLASS_NAME));
         }  catch (error) {
             logger.error(`Error fetching cached data for titles ${titles.join(', ')}`, error);
             continue;

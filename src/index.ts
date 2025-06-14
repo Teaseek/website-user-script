@@ -1,4 +1,4 @@
-import { insertShikimoriViewRating, insertShikimoriPosterRating } from "./main";
+import { insertShikimoriViewRating, insertShikimoriPosterRating, insertShikimoriListRating } from "./main";
 
 function observeDetailsPage(cb: () => void): void {
     cb();
@@ -6,15 +6,10 @@ function observeDetailsPage(cb: () => void): void {
 }
 
 observeDetailsPage(async() => {
-    try {   
-        await insertShikimoriViewRating();
-    } catch (error) {
-        console.error('Error inserting Shikimori view rating:', error);
-    }
 
-    try {
-        await insertShikimoriPosterRating();
-    } catch (error) {
-        console.error('Error inserting Shikimori poster rating:', error);
-    }
+    Promise.allSettled([
+        insertShikimoriListRating(),
+        insertShikimoriPosterRating(),
+        insertShikimoriViewRating()
+    ]);
 });

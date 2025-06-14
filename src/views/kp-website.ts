@@ -24,3 +24,13 @@ export function createRatingPosterBadge({ url, rating = '0' }: { url: string, ra
     `;
     return span;
 }
+
+export function createRatingListBadge({ url, rating = '0' }: { url: string, rating?: string }, className: string): HTMLElement {
+    const li = document.createElement('li');
+    li.className = `list-inline-item ${className}`;
+    li.innerHTML = `
+        <img src="${SHIKIMORI_ICON}" class="img-responsive kinopoisk" alt="Shikimori">
+        <a class="text-success" href="${url}" rel="nofollow" target="_blank">${formatRating(rating)}</a>
+    `;
+    return li;
+}
