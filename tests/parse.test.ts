@@ -1,13 +1,14 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { getTitles, getViewCell, isAnimePage } from '../src/parse/kp-website';
+import { getItemPosterRatingContainers, getTitles, getViewRatingBadgeContainer, isAnimePage, getItemPosterRatingBadgeContainer } from '../src/parse/kp-website';
 import { getRatingCount } from '../src/parse/shikimory-website';
 import { initEnv } from './utils/env';
 import fs from 'fs';
 import path from 'path';
 
-const hasFixture = fs.existsSync(path.resolve(__dirname, 'fixtures/kp-detail.html'));
+const hasFixtureDetails = fs.existsSync(path.resolve(__dirname, 'fixtures/kp-detail.html'));
+const hasFixturePosters = fs.existsSync(path.resolve(__dirname, 'fixtures/kp-posters.html'));
 
-describe.skipIf(!hasFixture)('parse/kp-website', () => {
+describe.skipIf(!hasFixtureDetails)('parse/kp-website/details', () => {
     beforeAll(() => {
         initEnv();
 
@@ -20,12 +21,44 @@ describe.skipIf(!hasFixture)('parse/kp-website', () => {
     });
 
     it('should return null if details cell not found', () => {
-        expect(getViewCell()).toBeDefined();
+        expect(getViewRatingBadgeContainer()).toBeDefined();
     });
 
     it('should detect anime page', async () => {
         const result = isAnimePage('Жанр', ['Аниме', 'Мультфильм']);
         expect(result).toBe(true);
+    });
+});
+
+describe.skipIf(!hasFixturePosters)('parse/kp-website/posters', () => {
+    beforeAll(() => {
+        initEnv();
+
+        const html = fs.readFileSync(path.resolve(__dirname, 'fixtures/kp-posters.html'), 'utf-8');
+        document.documentElement.innerHTML = html;
+    });
+
+    it('should parse titles from item-info', () => {
+        const container = getItemPosterRatingContainers()?.[0];
+        expect(container).toBeDefined();
+        if (!container) {
+            return;
+        }
+
+        expect(getTitles('item-info', container).length).toBeGreaterThan(0);
+    });
+
+    it('should return null if item poster rating containers not found', () => {
+        const containers = getItemPosterRatingContainers();
+        expect(containers).toBeDefined();
+        if (!containers) {
+            return;
+        }
+
+        const badgeContainer = getItemPosterRatingBadgeContainer(containers[0]);
+
+        expect(badgeContainer).toBeDefined();
+        expect(containers.length).toBeGreaterThan(0);
     });
 });
 

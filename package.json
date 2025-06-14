@@ -1,6 +1,6 @@
 {
   "name": "website-user-script",
-  "version": "1.3.69",
+  "version": "1.4.7",
   "description": "Inserts Shikimori rating and vote count into website anime detail pages only, tries both original and Russian title, caches for 1 day.",
   "homepage": "https://github.com/Teaseek/website-user-script#readme",
   "bugs": {

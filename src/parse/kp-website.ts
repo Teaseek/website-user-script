@@ -10,13 +10,47 @@ export function isAnimePage(label: string, genres: string[]): boolean {
     });
 }
 
-export function getTitles(): string[] {
-    const [ruTitle, origTitle] = document.title.split('/')
-        .map(t => t.trim() ?? '')
-        .filter(Boolean);
-    return [origTitle, ruTitle];
+export function getTitles(from: 'title' | 'item-info' = 'title', element?: Element): string[] {
+    let [origTitle, ruTitle]: string | undefined[] = [undefined, undefined];
+
+    switch (from) {
+        case 'item-info': {
+            if (!element) break;
+            const itemInfo = element.querySelector('.item-info');
+            if (!itemInfo) break;
+
+            const titleElement = itemInfo.querySelector('.item-title a');
+            const authorElement = itemInfo.querySelector('.item-author a');
+            if (titleElement) {
+                ruTitle = titleElement.getAttribute('title')?.trim();
+            }
+            if (authorElement) {
+                origTitle = authorElement.getAttribute('title')?.trim();
+            }
+            break;
+        }
+        case 'title': {
+            [ruTitle, origTitle] = document.title.split('/')
+                .map(t => t.trim() ?? undefined)
+            break;
+        }
+    }
+
+    return [origTitle, ruTitle].filter(t => t !== undefined);
 }
 
-export function getViewCell(): Element | null {
+export function getViewRatingBadgeContainer(): Element | null {
     return document.querySelector('td.item-view');
+}
+
+export function getItemPosterRatingBadgeContainer(element: Element): Element | null {
+    return element.querySelector('.bottomcenter-2x .label');
+}
+
+export function getItemPosterRatingContainers(): HTMLElement[] | null {
+    const selector = '.item-poster';
+    return Array.from(document.querySelectorAll(selector))
+        .filter(el => el.textContent?.trim() !== '')
+        .map(el => el.parentElement)
+        .filter(el => el !== null);
 }
